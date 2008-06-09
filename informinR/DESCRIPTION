@@ -1,0 +1,10 @@
+Package: informinR
+Type: Package
+Title: Tools to calculate informativeness scores for genotype data
+Version: 1.0.0
+Date: 2008-03-25
+Author: Ryan Raaum
+Maintainer: Ryan Raaum <code@raaum.org>
+Description: Contains functions for calculating informativeness scores
+	In, delta, and others.
+License: Unlimited
