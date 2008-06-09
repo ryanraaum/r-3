@@ -1,0 +1,89 @@
+#Arlequin input file written by program the simulation program sim_coal.exe
+
+
+[Profile]
+	Title="A series of simulated samples"
+	NbSamples=4
+
+	GenotypicData=1
+	GameticPhase=1
+	RecessiveData=0
+	DataType=STANDARD
+	LocusSeparator=WHITESPACE
+	MissingData='?'
+
+[Data]
+	[[Samples]]
+
+
+		SampleName="Sample 1"
+		SampleSize=5
+		SampleData= {
+1_1	1	T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+		T 	G 	T 	T 	C 	G 	T 	G 	T 	C 	
+1_2	1	T 	G 	T 	T 	C 	G 	T 	G 	T 	C 	
+		T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+1_3	1	T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+		T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+1_4	1	T 	G 	T 	T 	C 	G 	T 	G 	T 	C 	
+		T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+1_5	1	T 	G 	T 	T 	C 	G 	T 	G 	T 	C 	
+		T 	G 	T 	T 	C 	G 	T 	G 	G 	C 	
+
+}
+		SampleName="Sample 17"
+		SampleSize=5
+		SampleData= {
+17_1	1	T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+17_2	1	T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+		T 	T 	A 	T 	A 	C 	T 	G 	G 	C 	
+17_3	1	T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+17_4	1	T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+		G 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+17_5	1	T 	G 	A 	T 	A 	C 	T 	T 	G 	C 	
+		T 	T 	A 	T 	A 	C 	T 	T 	G 	C 	
+
+}
+		SampleName="Sample 26"
+		SampleSize=5
+		SampleData= {
+26_1	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+26_2	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+26_3	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+26_4	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+26_5	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	C 	
+
+}
+		SampleName="Sample 33"
+		SampleSize=5
+		SampleData= {
+33_1	1	T 	G 	A 	A 	A 	C 	T 	G 	G 	G 	
+		T 	G 	A 	A 	A 	C 	T 	G 	G 	G 	
+33_2	1	T 	G 	A 	A 	A 	C 	T 	G 	G 	G 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	G 	
+33_3	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	G 	
+		T 	G 	A 	A 	A 	C 	T 	G 	G 	G 	
+33_4	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	G 	
+		T 	G 	A 	T 	A 	C 	T 	G 	G 	G 	
+33_5	1	T 	G 	A 	T 	A 	C 	T 	G 	G 	G 	
+		T 	G 	A 	T 	A 	C 	G 	G 	G 	G 	
+
+}
+
+[[Structure]]
+
+	StructureName="Simulated data"
+	NbGroups=1
+	Group={
+	   "Sample 1"
+	   "Sample 17"
+	   "Sample 26"
+	   "Sample 33"
+	}

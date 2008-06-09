@@ -1,0 +1,10 @@
+Package: arlequininR
+Type: Package
+Title: Tools to parse Arlequin files
+Version: 1.0.0
+Date: 2008-03-25
+Author: Ryan Raaum
+Maintainer: Ryan Raaum <code@raaum.org>
+Description: Contains functions for reading and writing files formatted for
+	Excoffier's Arlequin program.
+License: Unlimited
