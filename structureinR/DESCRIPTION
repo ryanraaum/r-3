@@ -1,0 +1,10 @@
+Package: structureinR
+Type: Package
+Title: Tools to complement Structure
+Version: 1.0.0
+Date: 2008-03-25
+Author: Ryan Raaum
+Maintainer: Ryan Raaum <code@raaum.org>
+Description: Contains functions for reading and writing files formatted for
+	Pritchard's Structure program.
+License: Unlimited
