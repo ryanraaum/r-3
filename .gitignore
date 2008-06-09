@@ -1,3 +1,6 @@
+# ignore Mac directory info
+.DS_Store
+
 # ignore vim swap and backup files
 *~
 *.swp
