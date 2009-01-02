@@ -1,9 +1,9 @@
-\name{arlequininR-package}
-\alias{arlequininR-package}
-\alias{arlequininR}
+\name{RArlequin-package}
+\alias{RArlequin-package}
+\alias{RArlequin}
 \docType{package}
 \title{
-Tools to complement Arlequin
+R tools to complement Arlequin
 }
 \description{
 Contains functions for reading and writing files formatted for

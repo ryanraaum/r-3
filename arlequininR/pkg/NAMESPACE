@@ -1,1 +1,3 @@
-export(readArlequinData)
+useDynLib(arlequin)
+
+export(readArlequinData, conv)

@@ -1,6 +1,6 @@
-Package: arlequininR
+Package: RArlequin
 Type: Package
-Title: Tools to parse Arlequin files
+Title: R tools to parse Arlequin files
 Version: 1.0.0
 Date: 2008-03-25
 Author: Ryan Raaum
