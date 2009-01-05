@@ -1,7 +1,15 @@
-import(tools)
 import(methods)
 
-exportClasses(genotypeData)
+exportClasses("genotypeData")
 
-exportMethods(ploidy, markers, genotypes, samples, groups, sampleSizes, 
-	description, notes, extract)
+exportMethods("show",
+              "ploidy", 
+              "ploidy<-",
+              "markers", 
+              "genotypes", 
+              "samples", 
+              "groups", 
+              "sampleSizes", 
+	            "description", 
+              "notes", 
+              "extract")
