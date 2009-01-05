@@ -11,7 +11,7 @@ test.default_values <- function()
   checkEquals(numeric(0), ploidy(a))
   checkEquals(character(0), markers(a))
   checkEquals(matrix(nr=0,nc=0), genotypes(a))
-  checkEquals(factor(0), groups(a))
+  checkEquals(factor(), groups(a))
   checkEquals(numeric(0), sampleSizes(a))
   checkEquals("", description(a))
   checkEquals("", notes(a))
@@ -46,4 +46,33 @@ test.assignment <- function()
   checkEquals("blah", notes(a))
 }
 
+test.validation <- function()
+{
+    # the heart of the genotypeData class is a matrix of genotype data
+    genotypes <- matrix(c(1,1,2,2), nr=1)
+    # the sample names are the rownames of the genotypes matrix
+    rownames(genotypes) <- "S1"
+
+    # this should throw an exception because 
+    # 1. groups and sampleSizes
+    #    need to have information to match the number of samples
+    # 2. ploidy and markers
+    #    need to match up to the genotype data columns
+    checkException(new("genotypeData", genotypes=genotypes))
+
+    # first create some group and sample size data to match the genotype data
+    groups <- factor(c(1))
+    sample_sizes <- 1
+
+    # next create some ploidy and marker data to match the genotype data
+    ploidy <- c(2,2)
+    markers <- c("M1", "M2")
+
+    # now this should pass
+    new("genotypeData", genotypes=genotypes, 
+                        groups=groups,
+                        sample_sizes=sample_sizes,
+                        ploidy=ploidy,
+                        markers=markers)
+}
 

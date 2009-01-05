@@ -6,24 +6,68 @@ CLASS = "genotypeData"
 
 setClass(CLASS,
 	representation(
-		ploidy  = "numeric",
-		markers = "character",
 		genotypes = "matrix",
 		groups = "factor",
 		sample_sizes = "numeric",
+		ploidy  = "numeric",
+		markers = "character",
+        phased = "logical",
 		description = "character",
 		notes = "character"		
 	),
 	prototype = prototype(
+		genotypes = matrix(nr=0,nc=0),
+		groups = factor(),
+		sample_sizes = numeric(0),
 		ploidy = numeric(0),
 		markers = character(0),
-		genotypes = matrix(nr=0,nc=0),
-		groups = factor(0),
-		sample_sizes = numeric(0),
+        phased = FALSE,
 		description = "",
 		notes = ""
 	)
 )
+
+# --------------------------/
+# Validation
+# --------------------------/
+
+.validate <- function(object) { 
+    msg <- NULL
+    # samples are in the rows in the genotypes matrix,
+    # so all information pertaining to samples must have
+    # the same number of entries as there are rows
+    #
+    # -- groups -- every sample must be assigned to a group
+    #              (even if every sample is assigned to the same group)
+    if (length(samples(object)) > length(groups(object)))
+        msg <- c(msg, "there are more samples than group assignments")
+    else if (length(samples(object)) < length(groups(object)))
+        msg <- c(msg, "there are more group assignments than samples")
+    # -- sampleSizes -- every sample must have a sample size
+    if (length(samples(object)) > length(sampleSizes(object)))
+        msg <- c(msg, "there are more samples than sample size data")
+    else if (length(samples(object)) < length(groups(object)))
+        msg <- c(msg, "there are more sample size data than samples")
+
+    # marker data are in the columns of the genotypes matrix,
+    # so the following must apply
+    #
+    # -- ploidy -- the sum of the ploidy vector must equal the number of 
+    #              columns in the the genotypes matrix
+    #              (each entry in the ploidy vector is the number of columns
+    #               for the corresponding marker)
+    if (sum(ploidy(object)) != ncol(genotypes(object)))
+        msg <- c(msg, "ploidy values do not match up to the data")
+    # -- markers -- there should be the same number of marker names as
+    #               ploidy entries
+    if (length(ploidy(object)) != length(markers(object)))
+        msg <- c(msg, "markers and ploidy information do not match up")
+
+    if (is.null(msg)) TRUE
+    else msg
+}
+
+setValidity(CLASS, .validate)
 
 # --------------------------/
 # Accessors - Getters
