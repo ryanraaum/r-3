@@ -1,6 +1,6 @@
-\name{structureinR-package}
-\alias{structureinR-package}
-\alias{structureinR}
+\name{RStructure-package}
+\alias{RStructure-package}
+\alias{RStructure}
 \docType{package}
 \title{
 Tools to complement Structure
