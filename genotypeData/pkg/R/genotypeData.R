@@ -54,6 +54,41 @@ bindReplaceMethod("ploidy<-", CLASS, function(object, value) {
   object
 })
 
+bindReplaceMethod("markers<-", CLASS, function(object, value) {
+  object@markers <- value
+  object
+})
+
+bindReplaceMethod("genotypes<-", CLASS, function(object, value) {
+  object@genotypes <- value
+  object
+})
+
+bindReplaceMethod("samples<-", CLASS, function(object, value) {
+  rownames(object@genotypes) <- value
+  object
+})
+
+bindReplaceMethod("groups<-", CLASS, function(object, value) {
+  object@groups <- value
+  object
+})
+
+bindReplaceMethod("sampleSizes<-", CLASS, function(object, value) {
+  object@sample_sizes <- value
+  object
+})
+
+bindReplaceMethod("description<-", CLASS, function(object, value) {
+  object@description <- value
+  object
+})
+
+bindReplaceMethod("notes<-", CLASS, function(object, value) {
+  object@notes <- value
+  object
+})
+
 # --------------------------/
 # Extract Subsets
 # --------------------------/
