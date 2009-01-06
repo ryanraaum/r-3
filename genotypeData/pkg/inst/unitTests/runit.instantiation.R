@@ -8,14 +8,13 @@ a <- NULL
  
 test.default_values <- function()
 {
+  checkEquals(matrix(nr=0,nc=0), genotypes(a))
+  checkEquals(NULL, samples(a))
+  checkEquals(factor(), sampleGroups(a))
+  checkEquals(numeric(0), sampleSizes(a))
   checkEquals(numeric(0), ploidy(a))
   checkEquals(character(0), markers(a))
-  checkEquals(matrix(nr=0,nc=0), genotypes(a))
-  checkEquals(factor(), groups(a))
-  checkEquals(numeric(0), sampleSizes(a))
-  checkEquals("", description(a))
-  checkEquals("", notes(a))
-  checkEquals(NULL, samples(a))
+  checkEquals(factor(), markerGroups(a))
 }
 
 test.assignment <- function()
@@ -24,26 +23,23 @@ test.assignment <- function()
   checkEquals(1, nrow(genotypes(a)))
   checkEquals(4, ncol(genotypes(a)))
 
+  samples(a) <- "S1"
+  checkEquals("S1", samples(a))
+
+  sampleGroups(a) <- factor(c(1,1))
+  checkEquals(factor(c(1,1)), sampleGroups(a))
+
+  sampleSizes(a) <- 1
+  checkEquals(1, sampleSizes(a))
+
   ploidy(a) <- c(2,2)
   checkEquals(c(2,2), ploidy(a))
 
   markers(a) <- c("M1", "M2")
   checkEquals(c("M1", "M2"), markers(a))
 
-  groups(a) <- factor(c(1,1))
-  checkEquals(factor(c(1,1)), groups(a))
-
-  sampleSizes(a) <- 1
-  checkEquals(1, sampleSizes(a))
-
-  samples(a) <- "S1"
-  checkEquals("S1", samples(a))
-
-  description(a) <- "blah"
-  checkEquals("blah", description(a))
-
-  notes(a) <- "blah"
-  checkEquals("blah", notes(a))
+  markerGroups(a) <- factor(c(1,1))
+  checkEquals(factor(c(1,1)), markerGroups(a))
 }
 
 test.validation <- function()
@@ -61,18 +57,20 @@ test.validation <- function()
     checkException(new("genotypeData", genotypes=genotypes))
 
     # first create some group and sample size data to match the genotype data
-    groups <- factor(c(1))
+    sample_groups <- factor(c(1))
     sample_sizes <- 1
 
     # next create some ploidy and marker data to match the genotype data
     ploidy <- c(2,2)
     markers <- c("M1", "M2")
+    marker_groups <- factor(c(1,1))
 
     # now this should pass
     new("genotypeData", genotypes=genotypes, 
-                        groups=groups,
+                        sample_groups=sample_groups,
                         sample_sizes=sample_sizes,
                         ploidy=ploidy,
-                        markers=markers)
+                        markers=markers,
+						marker_groups=marker_groups)
 }
 

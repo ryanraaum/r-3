@@ -3,20 +3,20 @@ import(methods)
 exportClasses("genotypeData")
 
 exportMethods("show",
-              "ploidy", 
-              "ploidy<-",
-              "markers", 
-              "markers<-", 
+
               "genotypes", 
               "genotypes<-", 
               "samples", 
               "samples<-", 
-              "groups", 
-              "groups<-", 
+              "sampleGroups", 
+              "sampleGroups<-", 
               "sampleSizes", 
               "sampleSizes<-", 
-	          "description", 
-	          "description<-", 
-              "notes", 
-              "notes<-", 
+              "ploidy", 
+              "ploidy<-",
+              "markers", 
+              "markers<-", 
+              "markerGroups", 
+              "markerGroups<-", 
+
               "extract")

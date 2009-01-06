@@ -6,41 +6,33 @@
 
 \alias{genotypes,genotypeData-method}
 \alias{genotypes<-,genotypeData-method}
-\alias{groups,genotypeData-method}
-\alias{groups<-,genotypeData-method}
-\alias{sampleSizes,genotypeData-method}
-\alias{sampleSizes<-,genotypeData-method}
 \alias{samples,genotypeData-method}
 \alias{samples<-,genotypeData-method}
+\alias{sampleGroups,genotypeData-method}
+\alias{sampleGroups<-,genotypeData-method}
+\alias{sampleSizes,genotypeData-method}
+\alias{sampleSizes<-,genotypeData-method}
 \alias{ploidy,genotypeData-method}
 \alias{ploidy<-,genotypeData-method}
 \alias{markers,genotypeData-method}
 \alias{markers<-,genotypeData-method}
-\alias{phased,genotypeData-method}
-\alias{phased<-,genotypeData-method}
-\alias{description,genotypeData-method}
-\alias{description<-,genotypeData-method}
-\alias{notes,genotypeData-method}
-\alias{notes<-,genotypeData-method}
+\alias{markerGroups,genotypeData-method}
+\alias{markerGroups<-,genotypeData-method}
 
 \alias{genotypes}
 \alias{genotypes<-}
-\alias{groups}
-\alias{groups<-}
-\alias{sampleSizes}
-\alias{sampleSizes<-}
 \alias{samples}
 \alias{samples<-}
+\alias{sampleGroups}
+\alias{sampleGroups<-}
+\alias{sampleSizes}
+\alias{sampleSizes<-}
 \alias{ploidy}
 \alias{ploidy<-}
 \alias{markers}
 \alias{markers<-}
-\alias{phased}
-\alias{phased<-}
-\alias{description}
-\alias{description<-}
-\alias{notes}
-\alias{notes<-}
+\alias{markerGroups}
+\alias{markerGroups<-}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{ A Class to Contain and Describe Genotype Data }

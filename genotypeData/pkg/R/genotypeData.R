@@ -7,21 +7,21 @@ CLASS = "genotypeData"
 setClass(CLASS,
 	representation(
 		genotypes = "matrix",
-		groups = "factor",
+		sample_groups = "factor",
 		sample_sizes = "numeric",
 		ploidy  = "numeric",
 		markers = "character",
-        phased = "logical",
+		marker_groups = "factor",
 		description = "character",
 		notes = "character"		
 	),
 	prototype = prototype(
 		genotypes = matrix(nr=0,nc=0),
-		groups = factor(),
+		sample_groups = factor(),
 		sample_sizes = numeric(0),
 		ploidy = numeric(0),
 		markers = character(0),
-        phased = FALSE,
+		marker_groups = factor(),
 		description = "",
 		notes = ""
 	)
@@ -39,14 +39,14 @@ setClass(CLASS,
     #
     # -- groups -- every sample must be assigned to a group
     #              (even if every sample is assigned to the same group)
-    if (length(samples(object)) > length(groups(object)))
+    if (length(samples(object)) > length(sampleGroups(object)))
         msg <- c(msg, "there are more samples than group assignments")
-    else if (length(samples(object)) < length(groups(object)))
+    else if (length(samples(object)) < length(sampleGroups(object)))
         msg <- c(msg, "there are more group assignments than samples")
     # -- sampleSizes -- every sample must have a sample size
     if (length(samples(object)) > length(sampleSizes(object)))
         msg <- c(msg, "there are more samples than sample size data")
-    else if (length(samples(object)) < length(groups(object)))
+    else if (length(samples(object)) < length(sampleSizes(object)))
         msg <- c(msg, "there are more sample size data than samples")
 
     # marker data are in the columns of the genotypes matrix,
@@ -73,35 +73,17 @@ setValidity(CLASS, .validate)
 # Accessors - Getters
 # --------------------------/
 
-bindMethod("ploidy",      CLASS, function(object) object@ploidy)
-
-bindMethod("markers",     CLASS, function(object) object@markers)
-
-bindMethod("genotypes",   CLASS, function(object) object@genotypes)
-
-bindMethod("samples",     CLASS, function(object) rownames(object@genotypes))
-
-bindMethod("groups",      CLASS, function(object) object@groups)
-
-bindMethod("sampleSizes", CLASS, function(object) object@sample_sizes)
-
-bindMethod("description", CLASS, function(object) object@description)
-
-bindMethod("notes",       CLASS, function(object) object@notes)
+bindMethod("genotypes",   	CLASS, function(object) object@genotypes)
+bindMethod("samples",     	CLASS, function(object) rownames(object@genotypes))
+bindMethod("sampleGroups",	CLASS, function(object) object@sample_groups)
+bindMethod("sampleSizes", 	CLASS, function(object) object@sample_sizes)
+bindMethod("ploidy",      	CLASS, function(object) object@ploidy)
+bindMethod("markers",     	CLASS, function(object) object@markers)
+bindMethod("markerGroups",	CLASS, function(object) object@marker_groups)
 
 # --------------------------/
 # Accessors - Setters
 # --------------------------/
-
-bindReplaceMethod("ploidy<-", CLASS, function(object, value) {
-  object@ploidy <- value
-  object
-})
-
-bindReplaceMethod("markers<-", CLASS, function(object, value) {
-  object@markers <- value
-  object
-})
 
 bindReplaceMethod("genotypes<-", CLASS, function(object, value) {
   object@genotypes <- value
@@ -113,8 +95,8 @@ bindReplaceMethod("samples<-", CLASS, function(object, value) {
   object
 })
 
-bindReplaceMethod("groups<-", CLASS, function(object, value) {
-  object@groups <- value
+bindReplaceMethod("sampleGroups<-", CLASS, function(object, value) {
+  object@sample_groups <- value
   object
 })
 
@@ -123,13 +105,18 @@ bindReplaceMethod("sampleSizes<-", CLASS, function(object, value) {
   object
 })
 
-bindReplaceMethod("description<-", CLASS, function(object, value) {
-  object@description <- value
+bindReplaceMethod("ploidy<-", CLASS, function(object, value) {
+  object@ploidy <- value
   object
 })
 
-bindReplaceMethod("notes<-", CLASS, function(object, value) {
-  object@notes <- value
+bindReplaceMethod("markers<-", CLASS, function(object, value) {
+  object@markers <- value
+  object
+})
+
+bindReplaceMethod("markerGroups<-", CLASS, function(object, value) {
+  object@marker_groups <- value
   object
 })
 
