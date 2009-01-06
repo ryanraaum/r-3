@@ -1,13 +1,13 @@
-PACKAGE=$(wildcard *.tar.gz)
+PACKAGE=RArlequin
 
 check:
 	R CMD CHECK pkg
 
 build:
-	R CMD BUILD pkg
+	R CMD INSTALL --build pkg
 
 install: build
-	R CMD INSTALL ${PACKAGE}
+	R CMD INSTALL ${PACKAGE}*.tar.gz
 
 test: install
 	export RCMDCHECK=FALSE;\
@@ -16,5 +16,5 @@ test: install
 
 clean:
 	rm -rf pkg.Rcheck
-	rm -rf ${PACKAGE}
-	rm pkg/inst/unitTests/report*
+	rm -rf ${PACKAGE}*.tar.gz
+	rm -f pkg/inst/unitTests/report*

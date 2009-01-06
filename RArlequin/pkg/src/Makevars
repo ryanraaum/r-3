@@ -1,0 +1,15 @@
+MYCFLAGS=-I/Library/Frameworks/R.framework/Headers
+
+%.o: %.c
+	$(CC) $(MYCFLAGS) -c $< -o $@
+
+PKG_SOURCES = \
+  arlequin.o
+
+OBJECTS=$(PKG_SOURCES:.c=.o)
+
+all: myclean $(SHLIB)
+
+myclean:
+	rm -f $(OBJECTS)
+

@@ -90,3 +90,16 @@ function(a, b)
 {
   .C("convolve", as.double(a), as.integer(length(a)), as.double(b), as.integer(length(b)), ab = double(length(a) + length(b) - 1))$ab
 }
+
+"testit" <-
+function(fn)
+{
+	result <- .C("test", as.character(fn), a = integer(1))
+	result$a
+}
+
+"testit2" <-
+function(fn)
+{
+	.Call("test2", fn)
+}
