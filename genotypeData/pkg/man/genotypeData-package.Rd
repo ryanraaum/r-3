@@ -1,6 +1,5 @@
 \name{genotypeData-package}
 \alias{genotypeData-package}
-\alias{genotypeData}
 \docType{package}
 \title{
 What the package does (short line)
