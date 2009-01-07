@@ -1,1 +1,3 @@
+importClassesFrom(genotypeData)
+
 export(readStructureData)
