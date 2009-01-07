@@ -18,5 +18,9 @@ exportMethods("show",
               "markers<-", 
               "markerGroups", 
               "markerGroups<-", 
+			  "extras",
+			  "extras<-",
 
               "extract")
+
+export("genotypeData")
