@@ -68,6 +68,9 @@ genotypeData <- function(genotypes,
 	if (! is.matrix(genotypes))
 		genotypes <- as.matrix(genotypes)
 
+	nrows <- dim(genotypes)[1]
+	ncols <- dim(genotypes)[2]
+
 	if (! is.numeric(ploidy))
 		stop("argument 'ploidy' of wrong type (must be numeric)")
 
@@ -77,105 +80,80 @@ genotypeData <- function(genotypes,
 	if ((ploidy %% 1) != 0)
 		stop("argument 'ploidy' must be a whole number")
 
-	if (is.null(samples))
-		if (onerowperind)
-			samples <- seq(1, dim(genotypes)[1])
-		else {
-			samples <- seq(1, dim(genotypes)[1]/ploidy)
-			samples <- rep(samples, each=ploidy) 
-		}
-
-	if (is.null(markers))
-		if (onerowperind) {
-			markers <- seq(1, dim(genotypes)[2]/ploidy) 
-			markers <- rep(markers, each=ploidy)
-		} else
-			markers <- seq(1, dim(genotypes)[2]) 
-
 	if (! is.logical(onerowperind))
 		stop("argument 'onerowperind' of wrong type (must be logical)")
 
-	if (ploidy == 1) {
-		# process simple case of haploid data
+	if (is.null(samples))
+		if (onerowperind)
+			samples <- seq(1, nrows)
+		else {
+			samples <- seq(1, nrows/ploidy)
+			samples <- rep(samples, each=ploidy) 
+		}
 
-		# if haploid, then samples and markers must match genotypes dimensions
-		if (length(samples) != dim(genotypes)[1])
-			stop("vector of sample names does not match number of rows in genotypes matrix")
-		if (length(markers) != dim(genotypes)[2])
-			stop("vector of marker names does not match number of columns in genotypes matrix")
+	if (is.null(sampleGroups))
+		sampleGroups <- factor(rep(1, nrows))
 
-		if (is.null(sampleGroups))
-			sampleGroups <- factor(rep(1, length(samples)))
-		# else
-			# TODO
-		if (is.null(sampleSizes))
-			sampleSizes <- rep(1, length(samples))
-		# else
-			# TODO
-		if (is.null(markerGroups))
-			markerGroups <- factor(rep(1, length(markers)))
-		# else
-			# TODO
+	if (is.null(sampleSizes))
+		sampleSizes <- rep(1, nrows)
 
-		rownames(genotypes) <- samples
-		colnames(genotypes) <- markers
+	if (is.null(markers))
+		if (onerowperind) {
+			markers <- seq(1, ncols/ploidy) 
+			markers <- rep(markers, each=ploidy)
+		} else
+			markers <- seq(1, ncols) 
 
-	} else if (onerowperind) {
+	if (is.null(markerGroups))
+		markerGroups <- factor(rep(1, ncols))
+
+	if (onerowperind) {
 		# process one row per ind genotype matrix
 		
 		# ensure that the length of the samples vector is the same as the number of rows
-		if (length(samples) != dim(genotypes)[1])
+		if (length(samples) != nrows)
 			stop("vector of sample names does not match number of rows in genotypes matrix")
-
-		# deal with sample groups
-		if (is.null(sampleGroups))
-			sampleGroups <- factor(rep(1, length(samples)))
-		# else 
-			# TODO
-			
-
-		# deal with sample sizes
-		if (is.null(sampleSizes))
-			sampleSizes <- rep(1, length(samples))
-		# else 
-			# TODO
-			
 
 		# with one row per individual, the number of columns in the 
 		# genotypes matrix must be evenly divisible by the ploidy
-		if (dim(genotypes)[2] %% ploidy != 0)
+		if (ncols %% ploidy != 0)
 			stop("the number of columns in the genotypes data is not compatible with the given ploidy")
 
-		# with multiple columns per marker, the markers vector must be either
-		# 1. each marker once ( num cols / ploidy in length )
-		# 2. same length as number cols, but with repeated entries
+		# with multiple columns per marker, the standard internal format of the
+		# markers vector is the same length as ncols, but with repeated entries
+		# (i.e. with ploidy 2 and 2 markers: c("M1", "M1", "M2", "M2"))
+		#
+		# The constructor will also accept a marker list with each marker listed
+		# only once, in which case we will expand it out into the standard internal format
 		# 
 		# so, first check to see if we have each marker once
-		if (length(markers) == dim(genotypes)[2]/ploidy) {
-			# deal with marker groups
-			if (is.null(markerGroups))
-				markerGroups <- factor(rep(1, length(markers)))
-			# else
-				#TODO
+		if (length(markers) == ncols/ploidy) {
+			# we then expand the marker vector so that each column will have a name
+			markers <- rep(markers, each=ploidy)
+
+			# validate marker groups
+			# if marker groups were provided, they presumably followed the
+			# same format as the markers, so we will expand those out as well
+			if (length(markerGroups) == ncols/ploidy)
+				markerGroups <- rep(markerGroups, each=ploidy)
+
 		} else {
 			# if there are more sample entries than individuals, we should have
 			# a sample entry for every row of the matrix
-			if (length(markers) == dim(genotypes)[2]) {
-				# first deal with marker groups
-				if (is.null(markerGroups))
-					markerGroups <- factor(rep(1, length(markers)))
-				# else
-					# TODO
+			if (length(markers) == ncols) {
 
-				# all of this is to ensure that each marker name is repeated ploidy times
+				# all of this is to ensure that each marker name and each marker group is 
+				# repeated ploidy times
 				# i.e. for ploidy=2 the marker list is something like c("M1", "M1", "M2", "M2")
-				selectors <- data.frame(row.names = seq(1, dim(genotypes)[2]/ploidy))
+				selectors <- data.frame(row.names = seq(1, ncols/ploidy))
 				for (i in 1:ploidy)
-					selectors <- cbind(selectors, seq(i, dim(genotypes)[2], by=ploidy))
+					selectors <- cbind(selectors, seq(i, ncols, by=ploidy))
 				last <- 1
 				for (current in 2:ploidy) {
 					if (! all(markers[selectors[,last]] == markers[selectors[,current]]))
-						stop("sample vector provided is not compatible with genotypes matrix")
+						stop("markers vector provided is not compatible with genotypes matrix")
+					if (! all(markerGroups[selectors[,last]] == markerGroups[selectors[,current]]))
+						stop("marker groups vector provided is not compatible with genotypes matrix")
 					last <- current
 				}
 			} else {
@@ -187,65 +165,52 @@ genotypeData <- function(genotypes,
 		# process multiple row per ind genotype matrix	
 
 		# ensure that the length of the markers vector is the same as the number of columns
-		if (length(markers) != dim(genotypes)[2])
+		if (length(markers) != ncols)
 			stop("vector of marker names does not match number of columns in genotypes matrix")
-
-		# deal with marker groups
-		if (is.null(markerGroups))
-			markerGroups <- factor(rep(1, length(markers)))
-		# else 
-			# TODO
 
 		# with multiple rows per individual, the number of rows in the 
 		# genotypes matrix must be evenly divisible by the ploidy
-		if (dim(genotypes)[1] %% ploidy != 0)
+		if (nrows %% ploidy != 0)
 			stop("the number of rows in the genotypes data is not compatible with the given ploidy")
 
-		# with multiple rows per individual, the samples vector must be either
-		# 1. each individual once ( num rows / ploidy in length )
-		# 2. same length as number rows, but with repeated entries
+		# with multiple rows per individual, the standard internal format of the
+		# samples vector is the same length as nrows, but with repeated entries
+		# (i.e. with ploidy 2 and 2 samples: c("S1", "S1", "S2", "S2"))
+		#
+		# The constructor will also accept a samples list with each sample listed
+		# only once, in which case we will expand it out into the standard internal format
 		# 
-		# so, first check to see if we have each individual once
-		if (length(samples) == dim(genotypes)[1]/ploidy) {
+		# so, first check to see if we have each sample once
+		if (length(samples) == nrows/ploidy) {
+			# expand samples vector to have one name per row
+			samples <- rep(samples, each=ploidy)
 
-			# deal with sample groups
-			if (is.null(sampleGroups))
-				sampleGroups <- factor(rep(1, length(samples)))
-			# else 
-				# TODO
-
-			# deal with sample sizes
-			if (is.null(sampleSizes))
-				sampleSizes <- rep(1, length(samples))
-			# else 
-				# TODO
+			# validate sample groups and sample sizes
+			# if these were provided, they presumably followed the
+			# same format as the samples, so we will expand those out as well
+			if (length(sampleGroups) == nrows/ploidy)
+				sampleGroups <- rep(sampleGroups, each=ploidy)
+			if (length(sampleSizes) == nrows/ploidy)
+				sampleSizes <- rep(sampleSizes, each=ploidy)
 
 		} else {
 			# if there are more sample entries than individuals, we should have
 			# a sample entry for every row of the matrix
-			if (length(samples) == dim(genotypes)[1]) {
-				# first, deal with sample groups and sizes
-				# deal with sample groups
-				if (is.null(sampleGroups))
-					sampleGroups <- factor(rep(1, length(samples)))
-				# else 
-					# TODO
-
-				# deal with sample sizes
-				if (is.null(sampleSizes))
-					sampleSizes <- rep(1, length(samples))
-				# else 
-					# TODO
+			if (length(samples) == nrows) {
 
 				# all of this is to ensure that each sample name is repeated ploidy times
 				# i.e. for ploidy=2 the sample list is something like c("S1", "S1", "S2", "S2")
-				selectors <- data.frame(row.names = seq(1, dim(genotypes)[1]/ploidy))
+				selectors <- data.frame(row.names = seq(1, nrows/ploidy))
 				for (i in 1:ploidy)
-					selectors <- cbind(selectors, seq(i, dim(genotypes)[1], by=ploidy))
+					selectors <- cbind(selectors, seq(i, nrows, by=ploidy))
 				last <- 1
 				for (current in 2:ploidy) {
 					if (! all(samples[selectors[,last]] == samples[selectors[,current]]))
 						stop("sample vector provided is not compatible with genotypes matrix")
+					if (! all(sampleGroups[selectors[,last]] == sampleGroups[selectors[,current]]))
+						stop("sampleGroups vector provided is not compatible with genotypes matrix")
+					if (! all(sampleSizes[selectors[,last]] == sampleSizes[selectors[,current]]))
+						stop("sampleSizes vector provided is not compatible with genotypes matrix")
 					last <- current
 				}
 			} else {
@@ -254,6 +219,9 @@ genotypeData <- function(genotypes,
 		}
 
 	}
+
+	rownames(genotypes) <- samples
+	colnames(genotypes) <- markers
 
 	new("genotypeData",
 		genotypes=genotypes,

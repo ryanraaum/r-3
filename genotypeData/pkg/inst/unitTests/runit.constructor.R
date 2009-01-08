@@ -52,7 +52,7 @@ test.good_input <- function()
 	g <- valid_diploid_multi_row_genotypes
 
 	# valid genotype matrix
-#	checkEquals("genotypeData", class(genotypeData(g))[[1]])
+	checkEquals("genotypeData", class(genotypeData(g))[[1]])
 
 	# for haploid data, samples vector must have same
 	# number of entries as rows in genotype matrix
@@ -61,7 +61,7 @@ test.good_input <- function()
 	# for diploid data, samples vector must have either:
 	# 1. same number of entries as rows in genotype matrix, but doubled names
 	# 2. half the number of entries as rows in genotype matrix
-#	checkEquals("genotypeData", class(genotypeData(g, samples=c(1,1,2,2)))[[1]])
-#	checkEquals("genotypeData", class(genotypeData(g, samples=c(1,2)))[[1]])
+	checkEquals("genotypeData", class(genotypeData(g, samples=c(1,1,2,2)))[[1]])
+	checkEquals("genotypeData", class(genotypeData(g, samples=c(1,2)))[[1]])
 
 }
