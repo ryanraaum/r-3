@@ -210,17 +210,43 @@ genotypeData <- function(genotypes,
 .multi2one <- function(genotypes, ploidy) {
 	nrows <- dim(genotypes)[1]
 	nsamples <- nrows/ploidy
+	must.transform <- ! is.numeric(genotypes)
+	if (must.transform) {
+		mapping <- levels(factor(genotypes))
+		genotypes <- apply(genotypes, c(1,2), function(x) { 
+			if (is.na(x)) { length(mapping)+1 } else { which(x==mapping) } 
+		})
+	}
 	A <- t(kronecker(diag(1,nsamples),as.vector(diag(1,ploidy)))) 
 	B <- kronecker(genotypes,diag(1,ploidy))
-	A %*% B
+	result <- A %*% B
+	if (must.transform) {
+		result <- apply(result, c(1,2), function(x) { 
+			if (x > length(mapping)) { NA } else { mapping[x] } 
+		})
+	}
+	result
 }
 
 # and vice versa
 .one2multi <- function(genotypes, ploidy) {
 	nsamples <- dim(genotypes)[1]
+	must.transform <- ! is.numeric(genotypes)
+	if (must.transform) {
+		mapping <- levels(factor(genotypes))
+		genotypes <- apply(genotypes, c(1,2), function(x) { 
+			if (is.na(x)) { length(mapping)+1 } else { which(x==mapping) } 
+		})
+	}
 	A <- kronecker(diag(1,nsamples+1),as.vector(diag(1,ploidy)))
 	B <- kronecker(genotypes,diag(1,ploidy))
-	B %*% A
+	result <- B %*% A
+	if (must.transform) {
+		result <- apply(result, c(1,2), function(x) { 
+			if (x > length(mapping)) { NA } else { mapping[x] } 
+		})
+	}
+	result
 }
 
 
